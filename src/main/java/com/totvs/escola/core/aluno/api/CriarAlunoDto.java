@@ -11,24 +11,27 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AlunoDto {
+public class CriarAlunoDto {
 
 	@ApiModelProperty(value = "Forma ingresso do aluno.", required = true)
-	@NotBlank(message = "{AlunoDTO.formaIngresso.NotBlank}")
-	@Size(max = 60, message = "{AlunoDTO.formaIngresso.Size}")
+	@NotBlank(message = "{AlunoDto.formaIngresso.NotBlank}")
+	@Size(max = 60, message = "{AlunoDto.formaIngresso.Size}")
 	private String formaIngresso;
 
+	@ApiModelProperty(value = "Matrícula do aluno.", required = false)
+	private String matricula;
+
 	@ApiModelProperty(value = "Documento CPF do aluno.", required = true)
-	@NotBlank(message = "{AlunoDTO.cpf.NotBlank}")
-	@Size(min = 11, max = 14, message = "{AlunoDTO.cpf.Size}")
+	@NotBlank(message = "{AlunoDto.cpf.NotBlank}")
+	@Size(min = 11, max = 14, message = "{AlunoDto.cpf.Size}")
 	private String cpf;
 
 	@ApiModelProperty(value = "Nome do aluno.", required = true)
-	@NotBlank(message = "{AlunoDTO.nome.NotBlank}")
+	@NotBlank(message = "{AlunoDto.nome.NotBlank}")
 	private String nome;
 
 	@ApiModelProperty(value = "Email do aluno.", required = true)
-	@NotBlank(message = "{AlunoDTO.email.NotBlank}")
+	@NotBlank(message = "{AlunoDto.email.NotBlank}")
 	private String email;
 
 }

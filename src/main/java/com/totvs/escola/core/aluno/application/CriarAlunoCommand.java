@@ -1,14 +1,14 @@
 package com.totvs.escola.core.aluno.application;
 
 import com.totvs.escola.core.aluno.domain.enums.FormaIngresso;
-import com.totvs.escola.core.aluno.domain.model.CPF;
+import com.totvs.escola.core.pessoa.domain.model.CPF;
 
 import lombok.Data;
 import lombok.Getter;
 
 @Getter
 @Data(staticConstructor = "of")
-public class AlunoCommand {
+public class CriarAlunoCommand {
 
 	private final FormaIngresso formaIngresso;
 

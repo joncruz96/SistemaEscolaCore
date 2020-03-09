@@ -1,4 +1,4 @@
-package com.totvs.escola.core.aluno.domain.model;
+package com.totvs.escola.core.pessoa.domain.model;
 
 import com.totvs.tjf.core.stereotype.Aggregate;
 import com.totvs.tjf.core.stereotype.AggregateIdentifier;

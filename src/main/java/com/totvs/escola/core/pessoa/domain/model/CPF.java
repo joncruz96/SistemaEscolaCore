@@ -1,4 +1,4 @@
-package com.totvs.escola.core.aluno.domain.model;
+package com.totvs.escola.core.pessoa.domain.model;
 
 import static java.util.FormattableFlags.ALTERNATE;
 import static java.util.Objects.requireNonNull;

@@ -1,8 +1,4 @@
-package com.totvs.escola.core.aluno.amqp.service;
-
-import com.totvs.escola.core.aluno.domain.enums.FormaIngresso;
-import com.totvs.escola.core.aluno.domain.model.AlunoId;
-import com.totvs.escola.core.aluno.domain.model.CPF;
+package com.totvs.escola.core.aluno.amqp.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,13 +15,16 @@ import lombok.ToString;
 public final class AlunoCriadoEvent {
 
 	@NonNull
-	private AlunoId matricula;
+	private String alunoId;
 
 	@NonNull
-	private FormaIngresso formaIngresso;
+	private String formaIngresso;
 
 	@NonNull
-	private CPF cpf;
+	private String matricula;
+
+	@NonNull
+	private String cpf;
 
 	@NonNull
 	private String nome;

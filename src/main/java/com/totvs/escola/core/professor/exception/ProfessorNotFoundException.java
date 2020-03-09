@@ -1,4 +1,4 @@
-package com.totvs.escola.core.aluno.exception;
+package com.totvs.escola.core.professor.exception;
 
 import java.util.Set;
 
@@ -7,12 +7,12 @@ import javax.validation.ConstraintViolationException;
 
 import com.totvs.tjf.api.context.stereotype.error.ApiBadRequest;
 
-@ApiBadRequest("AlunoNotFoundException")
-public class AlunoNotFoundException extends ConstraintViolationException {
+@ApiBadRequest("ProfessorNotFoundException")
+public class ProfessorNotFoundException extends ConstraintViolationException {
 
 	private static final long serialVersionUID = 2100396918453973429L;
 
-	public AlunoNotFoundException(Set<? extends ConstraintViolation<?>> constraintViolations) {
+	public ProfessorNotFoundException(Set<? extends ConstraintViolation<?>> constraintViolations) {
 		super(constraintViolations);
 	}
 

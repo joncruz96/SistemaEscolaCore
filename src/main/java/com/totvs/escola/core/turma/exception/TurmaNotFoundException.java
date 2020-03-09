@@ -1,4 +1,4 @@
-package com.totvs.escola.core.aluno.exception;
+package com.totvs.escola.core.turma.exception;
 
 import java.util.Set;
 
@@ -7,12 +7,12 @@ import javax.validation.ConstraintViolationException;
 
 import com.totvs.tjf.api.context.stereotype.error.ApiBadRequest;
 
-@ApiBadRequest("AlunoNotFoundException")
-public class AlunoNotFoundException extends ConstraintViolationException {
+@ApiBadRequest("TurmaNotFoundException")
+public class TurmaNotFoundException extends ConstraintViolationException {
 
 	private static final long serialVersionUID = 2100396918453973429L;
 
-	public AlunoNotFoundException(Set<? extends ConstraintViolation<?>> constraintViolations) {
+	public TurmaNotFoundException(Set<? extends ConstraintViolation<?>> constraintViolations) {
 		super(constraintViolations);
 	}
 
