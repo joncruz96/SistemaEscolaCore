@@ -29,13 +29,4 @@ public class TurmaRepository extends CrudAggregateRepository<Turma, String> impl
 		return this.exists("data->>'codigo' = ?", new SqlParameterValue(Types.VARCHAR, codigo));
 	}
 
-	/*
-	 * Verificar esta validacao é um array no banco de dados para validar os alunos
-	 * da turma que esta sendo criada
-	 */
-	@Override
-	public boolean checkIfExistsByAlunos(String aluno) {
-		return this.exists("data->>'alunos' = ?", new SqlParameterValue(Types.VARCHAR, aluno));
-	}
-
 }

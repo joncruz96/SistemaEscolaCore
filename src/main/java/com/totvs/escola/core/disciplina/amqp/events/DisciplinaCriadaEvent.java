@@ -16,6 +16,8 @@ import lombok.ToString;
 @ToString
 public class DisciplinaCriadaEvent {
 
+	public static final String NAME = "DisciplinaCriadaEvent";
+
 	@NonNull
 	private String disciplinaId;
 

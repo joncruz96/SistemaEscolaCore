@@ -4,7 +4,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import com.totvs.escola.core.amqp.SistemaEscolaCorePublisher;
+import com.totvs.escola.core.amqp.EscolaPublisher;
 import com.totvs.escola.core.disciplina.amqp.events.DisciplinaCriadaEvent;
 import com.totvs.escola.core.disciplina.domain.model.Disciplina;
 import com.totvs.escola.core.disciplina.domain.model.DisciplinaId;
@@ -16,10 +16,10 @@ public class DisciplinaApplicationService {
 
 	private DisciplinaRepository repository;
 
-	private SistemaEscolaCorePublisher sistemaEscolaCorePublisher;
+	private EscolaPublisher sistemaEscolaCorePublisher;
 
 	public DisciplinaApplicationService(DisciplinaRepository repository,
-			SistemaEscolaCorePublisher sistemaEscolaCorePublisher) {
+			EscolaPublisher sistemaEscolaCorePublisher) {
 		this.repository = repository;
 		this.sistemaEscolaCorePublisher = sistemaEscolaCorePublisher;
 	}
@@ -36,7 +36,7 @@ public class DisciplinaApplicationService {
 				.cargaHoraria(disciplina.getCargaHoraria()).sigla(disciplina.getSigla())
 				.professorId(disciplina.getProfessorId().toString()).build();
 
-		sistemaEscolaCorePublisher.publish(event);
+		sistemaEscolaCorePublisher.publish(event, DisciplinaCriadaEvent.NAME);
 
 		return disciplina.getDisciplinaId();
 	}

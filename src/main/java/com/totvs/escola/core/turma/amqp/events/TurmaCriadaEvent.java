@@ -18,6 +18,8 @@ import lombok.ToString;
 @ToString
 public class TurmaCriadaEvent {
 
+	public static final String NAME = "TurmaCriadaEvent";
+
 	@NonNull
 	private String turmaId;
 

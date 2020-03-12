@@ -1,5 +1,30 @@
+# https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html#common-application-properties
+management:
+  server:
+    port: 8180
+    servlet:
+      context-path: /
+  endpoint:
+    health:
+      enabled: true
+    info:
+      enabled: false
+    metrics:
+      enabled: false
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      path-mapping:
+        prometheus: metrics
+      base-path: /_/
+      exposure:
+        include: "*"
+
 spring:
-      
+
+  profiles: local
+
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/escola
@@ -8,8 +33,6 @@ spring:
   
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-        ddl-auto: update
     properties:
       hibernate:
         jdbc:
@@ -18,5 +41,59 @@ spring:
         show_sql: true
         format_sql: true
         
+#  jpa:
+#    generate-ddl: true
+#    show-sql: true
+#    properties:      
+#      hibernate:
+#        format_sql: true
+#        show_sql: true
+  
+  cloud:
+    stream:
+      default-binder: rabbit1
+      bindings:
+        escola-input-events:
+          destination: escola-exchange
+          group: escola-core
+          binder: rabbit1   
+        escola-output-events:
+          destination: escola-exchange
+          group: escola-core
+          binder: rabbit1                
+        tjf-messaging-error-output:
+          destination: escola-core-errors
+          group: escola-core-errors
+          producer:
+            requiredGroups: escola-core-errors  
+      rabbit:
+        bindings:
+          rac-input:
+            consumer:
+              exchange-type: fanout
+      binders:
+        rabbit1:
+          type: rabbit
+          defaultCandidate: false
+          inheritEnvironment: false
+          environment:
+            spring:
+              rabbitmq:
+                host: localhost
+                port: 5672
+                username: guest
+                password: guest
+                virtualHost: /
+        rabbit2:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: localhost
+                port: 5672
+                username: guest
+                password: guest
+                virtualHost: /        
+        
 server:
-  port : 8080
+  port : 8280

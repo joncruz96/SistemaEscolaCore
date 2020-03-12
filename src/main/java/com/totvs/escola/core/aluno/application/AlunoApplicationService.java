@@ -9,7 +9,7 @@ import com.totvs.escola.core.aluno.amqp.events.AlunoCriadoEvent;
 import com.totvs.escola.core.aluno.domain.model.Aluno;
 import com.totvs.escola.core.aluno.domain.model.AlunoId;
 import com.totvs.escola.core.aluno.repository.AlunoRepository;
-import com.totvs.escola.core.amqp.SistemaEscolaCorePublisher;
+import com.totvs.escola.core.amqp.EscolaPublisher;
 import com.totvs.escola.core.pessoa.exception.CpfJaExistenteException;
 
 @Service
@@ -19,9 +19,9 @@ public class AlunoApplicationService {
 	@Autowired
 	private AlunoRepository repository;
 
-	private SistemaEscolaCorePublisher sistemaEscolaCorePublisher;
+	private EscolaPublisher sistemaEscolaCorePublisher;
 
-	public AlunoApplicationService(AlunoRepository repository, SistemaEscolaCorePublisher sistemaEscolaCorePublisher) {
+	public AlunoApplicationService(AlunoRepository repository, EscolaPublisher sistemaEscolaCorePublisher) {
 		this.repository = repository;
 		this.sistemaEscolaCorePublisher = sistemaEscolaCorePublisher;
 	}
@@ -35,11 +35,11 @@ public class AlunoApplicationService {
 
 		repository.insert(aluno);
 
-		AlunoCriadoEvent event = AlunoCriadoEvent.builder().alunoId(aluno.getAlunoId().toString())
+		AlunoCriadoEvent event = AlunoCriadoEvent.builder().id(aluno.getAlunoId().toString())
 				.formaIngresso(aluno.getFormaIngresso().toString()).cpf(aluno.getCpf().toString())
 				.email(aluno.getEmail()).matricula(aluno.getMatricula()).nome(aluno.getNome()).build();
 
-		sistemaEscolaCorePublisher.publish(event);
+		sistemaEscolaCorePublisher.publish(event, AlunoCriadoEvent.NAME);
 
 		return aluno.getAlunoId();
 	}

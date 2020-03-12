@@ -5,7 +5,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.totvs.escola.core.amqp.SistemaEscolaCorePublisher;
+import com.totvs.escola.core.amqp.EscolaPublisher;
 import com.totvs.escola.core.pessoa.exception.CpfJaExistenteException;
 import com.totvs.escola.core.professor.amqp.events.ProfessorCriadoEvent;
 import com.totvs.escola.core.professor.domain.model.Professor;
@@ -19,10 +19,10 @@ public class ProfessorApplicationService {
 	@Autowired
 	private ProfessorRepository repository;
 
-	private SistemaEscolaCorePublisher sistemaEscolaCorePublisher;
+	private EscolaPublisher sistemaEscolaCorePublisher;
 
 	public ProfessorApplicationService(ProfessorRepository repository,
-			SistemaEscolaCorePublisher sistemaEscolaCorePublisher) {
+			EscolaPublisher sistemaEscolaCorePublisher) {
 		this.repository = repository;
 		this.sistemaEscolaCorePublisher = sistemaEscolaCorePublisher;
 	}
@@ -41,7 +41,7 @@ public class ProfessorApplicationService {
 				.cpf(professor.getCpf().toString()).email(professor.getEmail()).nome(professor.getNome())
 				.titulacao(professor.getTitulacao()).build();
 
-		sistemaEscolaCorePublisher.publish(event);
+		sistemaEscolaCorePublisher.publish(event, ProfessorCriadoEvent.NAME);
 
 		return professor.getProfessorId();
 	}

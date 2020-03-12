@@ -7,11 +7,12 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.totvs.escola.core.amqp.SistemaEscolaCorePublisher;
+import com.totvs.escola.core.aluno.repository.AlunoRepository;
+import com.totvs.escola.core.amqp.EscolaPublisher;
 import com.totvs.escola.core.turma.amqp.events.TurmaCriadaEvent;
 import com.totvs.escola.core.turma.domain.model.Turma;
 import com.totvs.escola.core.turma.domain.model.TurmaId;
-import com.totvs.escola.core.turma.exception.AlunoJaExistenteNaTurmaException;
+import com.totvs.escola.core.turma.exception.AlunosTurmaNotFoundException;
 import com.totvs.escola.core.turma.exception.CodigoTurmaJaExistenteException;
 import com.totvs.escola.core.turma.repository.TurmaRepository;
 
@@ -20,12 +21,16 @@ import com.totvs.escola.core.turma.repository.TurmaRepository;
 public class TurmaApplicationService {
 
 	@Autowired
-	private TurmaRepository repository;
+	private TurmaRepository turmaRepository;
 
-	private SistemaEscolaCorePublisher sistemaEscolaCorePublisher;
+	private AlunoRepository alunoRepository;
 
-	public TurmaApplicationService(TurmaRepository repository, SistemaEscolaCorePublisher sistemaEscolaCorePublisher) {
-		this.repository = repository;
+	private EscolaPublisher sistemaEscolaCorePublisher;
+
+	public TurmaApplicationService(TurmaRepository turmaRepository, AlunoRepository alunoRepository,
+			EscolaPublisher sistemaEscolaCorePublisher) {
+		this.turmaRepository = turmaRepository;
+		this.alunoRepository = alunoRepository;
 		this.sistemaEscolaCorePublisher = sistemaEscolaCorePublisher;
 	}
 
@@ -35,15 +40,15 @@ public class TurmaApplicationService {
 				.alunos(cmd.getAlunos().stream().distinct().collect(Collectors.toList()))
 				.disciplinas(cmd.getDisciplinas().stream().distinct().collect(Collectors.toList())).build();
 
-		if (this.repository.checkIfExistsByCodigo((turma.getCodigo())))
+		if (this.turmaRepository.checkIfExistsByCodigo((turma.getCodigo())))
 			throw new CodigoTurmaJaExistenteException(turma.getCodigo());
 
 		turma.getAlunos().forEach(aluno -> {
-			if (this.repository.checkIfExistsByAlunos((turma.getCodigo())))
-				throw new AlunoJaExistenteNaTurmaException(turma.getCodigo());
+			if (this.alunoRepository.checkIfNotExistsByAluno(aluno.getId().toString()))
+				throw new AlunosTurmaNotFoundException(aluno.getId().toString());
 		});
 
-		repository.insert(turma);
+		turmaRepository.insert(turma);
 
 		TurmaCriadaEvent event = TurmaCriadaEvent.builder().turmaId(turma.getTurmaId().toString())
 				.descricao(turma.getDescricao()).anoLetivo(turma.getAnoLetivo())
@@ -51,7 +56,7 @@ public class TurmaApplicationService {
 				.alunos(turma.getAlunos().stream().map(String::valueOf).collect(Collectors.toList()))
 				.disciplinas(turma.getDisciplinas().stream().map(String::valueOf).collect(Collectors.toList())).build();
 
-		sistemaEscolaCorePublisher.publish(event);
+		sistemaEscolaCorePublisher.publish(event, TurmaCriadaEvent.NAME);
 
 		return turma.getTurmaId();
 	}

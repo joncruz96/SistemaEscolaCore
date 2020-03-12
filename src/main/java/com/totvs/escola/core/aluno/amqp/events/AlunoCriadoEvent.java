@@ -12,10 +12,12 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public final class AlunoCriadoEvent {
+public class AlunoCriadoEvent {
+
+	public static final String NAME = "AlunoCriadoEvent";
 
 	@NonNull
-	private String alunoId;
+	private String id;
 
 	@NonNull
 	private String formaIngresso;

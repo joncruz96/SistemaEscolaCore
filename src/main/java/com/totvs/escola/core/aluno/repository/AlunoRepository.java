@@ -29,4 +29,8 @@ public class AlunoRepository extends CrudAggregateRepository<Aluno, String> impl
 		return this.exists("data->'cpf'->>'valor' = ?", new SqlParameterValue(Types.VARCHAR, cpf));
 	}
 
+	@Override
+	public boolean checkIfNotExistsByAluno(String alunoId) {
+		return this.exists("Id = ?", new SqlParameterValue(Types.VARCHAR, alunoId));
+	}
 }

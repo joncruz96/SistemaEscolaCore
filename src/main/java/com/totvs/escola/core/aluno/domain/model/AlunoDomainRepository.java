@@ -6,4 +6,6 @@ public interface AlunoDomainRepository extends AggregateRepository<Aluno, String
 
 	boolean checkIfExistsByCpf(String cpf);
 
+	boolean checkIfNotExistsByAluno(String alunoId);
+
 }
